@@ -39,11 +39,12 @@ Plug 'folke/trouble.nvim'
 Plug 'sudormrfbin/cheatsheet.nvim'
 Plug 'phaazon/hop.nvim'
 Plug 'cwebster2/github-coauthors.nvim'
+"Plug 'HerringtonDarkholme/yats.vim'
+Plug 'neoclide/vim-jsx-improve'
 call plug#end()
 
 " cmp settings
-set completeopt=menu,menuone,noselect
-
+set completeopt=menu,menuone,preview
 
 " vim-test mappings
 nmap <leader>t :TestNearest<CR>
@@ -53,9 +54,10 @@ nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "neovim"
 
-" Ruby stuff
-autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
-autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
+" spaces not tabs
+set expandtab
+set shiftwidth=2 
+set tabstop=2
 
 " tagbar
 nmap tb :TagbarToggle<CR>
@@ -171,7 +173,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "solargraph", "tailwindcss" }
+local servers = { "solargraph", "tailwindcss", "tsserver" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
 	on_attach = on_attach,
@@ -251,6 +253,8 @@ require("trouble").setup()
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<Tab>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), { "i", "s" }),
+      ["<S-Tab>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), { "i", "s" }),
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -298,4 +302,4 @@ require("trouble").setup()
   }
 EOF
 
-
+autocmd BufNewFile,BufRead *.tsx setlocal filetype=javascriptreact
