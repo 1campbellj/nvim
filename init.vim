@@ -14,9 +14,9 @@ Plug 'feline-nvim/feline.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)window
 " Plug 'ryanoasis/vim-devicons' Icons without colours
-Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+" Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'psliwka/vim-smoothie'
-Plug 'phanviet/vim-monokai-pro'
+"Plug 'phanviet/vim-monokai-pro'
 Plug 't9md/vim-choosewin'
 Plug 'majutsushi/tagbar'
 Plug 'honza/vim-snippets'
@@ -39,12 +39,25 @@ Plug 'folke/trouble.nvim'
 Plug 'sudormrfbin/cheatsheet.nvim'
 Plug 'phaazon/hop.nvim'
 Plug 'cwebster2/github-coauthors.nvim'
+"Plug 'yuezk/vim-js'
 "Plug 'HerringtonDarkholme/yats.vim'
-Plug 'neoclide/vim-jsx-improve'
+"Plug 'maxmellon/vim-jsx-pretty'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
+"let g:vim_jsx_pretty_colorful_config = 1
+" dark red
+"hi jsxTagName guifg=#E06C75
+"hi tsxAttrib guifg=#F8BD7F cterm=italic
+"hi ReactState guifg=#C176A7
+"hi ReactProps guifg=#D19A66
+"hi tsxCloseTag guifg=#F99575
+"hi tsxCloseTagName guifg=#F99575
+
+set re=0
+
 " cmp settings
-set completeopt=menu,menuone,preview
+set completeopt=menu,menuone,preview,noselect
 
 " vim-test mappings
 nmap <leader>t :TestNearest<CR>
@@ -128,8 +141,8 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fa <cmd>lua require('telescope').extensions.githubcoauthors.coauthors()<CR> 
 
 " bufferline
-nnoremap <silent> b :BufferLinePick<CR>
-nnoremap <silent> B :BufferLinePickClose<CR>
+" nnoremap <silent> b :BufferLinePick<CR>
+" nnoremap <silent> B :BufferLinePickClose<CR>
 
 lua << EOF
 -- LSP config
@@ -221,13 +234,14 @@ require('feline').setup()
 
 require('gitsigns').setup()
 
-require('bufferline').setup {
-  options = {
-    show_close_icon = false,
-    show_buffer_close_icons = false,
-    diagnostics = "nvim_lsp"
-  }
-}
+
+-- require('bufferline').setup {
+--  options = {
+--    show_close_icon = false,
+--    show_buffer_close_icons = false,
+--    diagnostics = "nvim_lsp"
+--  }
+--}
 
 require("trouble").setup()
   -- Setup nvim-cmp.
@@ -300,6 +314,17 @@ require("trouble").setup()
   require('lspconfig')['solargarph'].setup {
     capabilities = capabilities
   }
+
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
 EOF
 
-autocmd BufNewFile,BufRead *.tsx setlocal filetype=javascriptreact
+"autocmd BufNewFile,BufRead *.tsx setlocal filetype=javascriptreact
